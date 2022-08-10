@@ -1,0 +1,224 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 07-29-2022
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+
+<template>
+
+    
+    <lightning-card variant="Narrow">
+        <lightning-layout multiple-rows>
+            
+            <lightning-layout-item
+                size="12"
+                padding="around-small"
+            >
+            
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <td colspan="3">
+                                <lightning-button
+                                    variant="base"
+                                    label="Reset to Default Filter(s)"
+                                    title="Reset to Default Filter(s)"
+                                    
+                                    onclick={clearSearch}
+                                ></lightning-button>
+                                
+                                
+                            </td>
+                            
+                        </tr>
+                        <tr class="slds-line-height_reset">
+                            <td colspan="3">
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Select Case Type</strong></label>
+                                    
+                                <lightning-combobox
+                                    name="typu"
+                                    value={typu}
+                                    placeholder="--Select Case Type--"
+                                    options={caseTypePickListValues}
+                                    onchange={handleChange}
+                                ></lightning-combobox>  
+                            
+                                </div>
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Select Case Type</strong></label>
+                                    <label class="slds-form-element__label"><strong>Sub Category</strong></label>
+                                     <lightning-combobox
+                                    name="cat"
+                                    value={cat}
+                                    placeholder="--Search Priority--"
+                                    options={categoryPickListValues}
+                                    onchange={handleChange}
+                                    read-only={readOnlyBool}
+                                ></lightning-combobox>
+                                </div>
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Select Case Status</strong></label>
+                                   
+                                    <lightning-combobox
+                                    name="status"
+                                    value={status}
+                                    placeholder="--Search Status--"
+                                    options={statusPickListValues}
+                                    onchange={handleChange}
+                                    read-only={readOnlyBool}
+                                    ></lightning-combobox>
+                                </div>
+                             </td>
+                            <td colspan="3">
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Search Case Number</strong></label>
+                                    
+                                    <lightning-input
+                                    type="text"
+                                    variant="standard"
+                                    name="caseNumber"
+                                    value={caseNumber}
+                                    placeholder="---Type case number---"
+                                    onkeyup={handleKeyUp}
+                                    disabled={readOnlyBool2}
+                                    ></lightning-input>
+                                </div>
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Search Account</strong></label>
+                                    
+                                <lightning-input
+                                    type="text"
+                                    variant="standard"
+                                    name="accountName"
+                                    value={accountName}
+                                    placeholder="---Type Account Name---"
+                                    onkeyup={handleKeyUp}
+                                ></lightning-input>
+                                </div>
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Search Contact</strong></label>
+                                    
+                            
+                                <lightning-input
+                                    type="text"
+                                    variant="standard"
+                                    name="contactName"
+                                    value={contactName}
+                                    placeholder="---Type Contact Name---"
+                                    onkeyup={handleKeyUp}
+                                    disabled={readOnlyBool2}
+                                ></lightning-input>
+                                </div>
+                            </td>
+                            
+                        </tr>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col"><input type="checkbox"></th>
+                            <th scope="col">Case Number</th>
+                            <th scope="col">Account Name</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Case Type</th>
+                            <th scope="col">Sub catergory</th>
+                            <th scope="col">Status</th>
+                        </tr>
+                        
+                    </thead>
+                    
+                    <tbody>
+                        <tr
+                            class="slds-hint-parent"
+                            for:each={searchable}
+                            for:item="item"
+                            key={item.Id}
+                        >
+                        
+                            
+                            <td scope="col"><input type="checkbox"></td>
+                            <th scope="row">
+                                <a
+                                    href="#"
+                                    onclick={handleNavigate}
+                                    data-id={item.caseData.Id}
+                                >{item.caseData.CaseNumber}
+                                </a>
+                            </th>
+                            
+                            <th scope="row">
+                                <span if:true={item.caseData.Account}>
+                                    <a
+                                        href="#"
+                                        onclick={handleNavigate}
+                                        data-id={item.caseData.Account.Id}
+                                    >
+                                        {item.caseData.Account.Name}
+                                    </a>
+                                </span>
+                            </th>
+                            <th scope="row">
+                                <span if:true={item.caseData.Contact}>
+                                    <a
+                                        href="#"
+                                        onclick={handleNavigate}
+                                        data-id={item.caseData.Contact.Id}
+                                    >
+                                        {item.caseData.Contact.Name}
+                                    </a>
+                                </span>
+                            </th>
+                            <th scope="row">{item.caseData.Case_Type__c}</th>
+                            <th scope="row">{item.caseData.Sub_Category_Type__c}</th>
+                            <th scope="row">{item.caseData.Status}</th>
+
+                            
+                           
+                        </tr>
+
+                        
+                    </tbody>
+                     
+                    <thead>                     
+                    <tr>                           
+                        <td colspan="7">
+                        <div  class="slds-align_absolute-center" if:true={errorMsg}>
+                            <p style="color: red;"><strong>{errorMsg}</strong></p>
+                        </div>  
+                        </td>
+                    </tr>
+                    </thead>
+                    
+                    
+                    <thead>
+                        
+                        <tr class="slds-line-height_reset">
+                            <td colspan="3">
+                                <div class="slds-form-element slds-form-element_horizontal" >
+                                    <label class="slds-form-element__label"><strong>Cases Per Page</strong></label>
+                                <lightning-combobox
+                                name="progress"
+                                label="Record to Display"
+                                value={v_pagesize}
+                                dropdown-alignment='bottom-right'
+                                placeholder=""
+                                options={comboBoxOptions}
+                                onchange={handleLimitChange}
+                                variant='label-hidden'>
+                            </lightning-combobox>
+                        </div>
+                        </td>
+                        </tr>
+                    </thead>
+                    
+                </table>
+
+            
+            </lightning-layout-item>
+                
+                
+        </lightning-layout>
+    </lightning-card>
+
+
+</template>
